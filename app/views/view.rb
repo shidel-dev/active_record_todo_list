@@ -1,7 +1,11 @@
+
+
+require 'pry'
 class ShowTasks
   def render(array_of_tasks)
-    array_of_tasks.each_with_index do |i, task|
+    array_of_tasks.each_with_index do |task, i|
       puts "#{i+1}. [#{task.complete == 1 ? "X" : " "}] - #{task.description}"
+    end
   end
 end
 
