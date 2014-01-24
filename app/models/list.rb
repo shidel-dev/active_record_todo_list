@@ -1,3 +1,5 @@
+require 'pry'
+
 class List < ActiveRecord::Base
   validates :name, presence: true
 
@@ -8,19 +10,17 @@ class List < ActiveRecord::Base
 
   has_many :tasks
 
-  def add(desc)
-    self.tasks << Task.create(:description => desc :complete => 0)
-    return true
+
+  def add_task(desc)
+    self.tasks.create(:description => desc, :complete => 0)
   end
 
-
-  def delete(num)
-
+  def delete_task(num)
+    self.tasks[num].destroy
   end
 
-  def complete(num)
-
+  def complete_task(num)
+    list = self
+    list.tasks[num].update_attribute(:complete, 1)
   end
-
-
 end
