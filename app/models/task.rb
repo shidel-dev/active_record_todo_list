@@ -4,6 +4,7 @@ class Task < ActiveRecord::Base
     validate :zero_or_one, on: :update
     validate :zero_or_one, on: :create
 
+    belongs_to :list
   def zero_or_one
     errors.add(:complete, "value must be a 0 for false an 1 for true") unless [0,1].include?(complete)
   end

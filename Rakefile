@@ -43,3 +43,21 @@ desc "Run the specs"
 RSpec::Core::RakeTask.new(:spec)
 
 task :default  => :specs
+
+desc 'Chains db:drop, db:create, db:migrate, db:seed tasks'
+task "db:yolo" do
+  # Drop existing database file
+  puts "Deleting #{DB_PATH}..."
+  rm_f DB_PATH
+  # Create new database file
+  puts "Creating file #{DB_PATH} if it doesn't exist..."
+  touch DB_PATH
+  # db:migrate
+  ActiveRecord::Migrator.migrations_paths << File.dirname(__FILE__) + 'db/migrate'
+  ActiveRecord::Migration.verbose = ENV["VERBOSE"] ? ENV["VERBOSE"] == "true" : true
+  ActiveRecord::Migrator.migrate(ActiveRecord::Migrator.migrations_paths, ENV["VERSION"] ? ENV["VERSION"].to_i : nil) do |migration|
+    ENV["SCOPE"].blank? || (ENV["SCOPE"] == migration.scope)
+  end
+  # db:seed
+  require APP_ROOT.join('db', 'seeds.rb')
+end
