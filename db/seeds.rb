@@ -4,10 +4,10 @@ require 'faker'
 
 # 5 times create a list with fake name
   # add 10 tasks to each list
-for List.all.each do |list|
-  10.times do {
-    list.tasks << Task.create(:description => Faker::Lorem.sentence)
-  }
+List.all.each do |list|
+  10.times do
+    list.tasks << Task.create(:description => Faker::Lorem.sentence, :complete => 0)
+  end
 end
 
 
